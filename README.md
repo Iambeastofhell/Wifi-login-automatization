@@ -1,1 +1,2 @@
-# Wifi-login-automization
+# Wifi-login-automatization
+This process can be made to run in the background at regular intervals on startup, or wifi connects using task scheduler (in windows) and a simple command in Linux. Desciption coming soon...
