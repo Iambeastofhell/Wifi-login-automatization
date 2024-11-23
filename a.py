@@ -10,12 +10,14 @@ import subprocess
 try:
     def checkssid():
         try:
+            print("enter ssid check")
             # For Windows: "netsh wlan show interfaces"
             # For Linux/macOS: "nmcli -t -f active,ssid dev wifi"
-            result = subprocess.check_output(["netsh", "wlan", "show", "interfaces"], universal_newlines=True)
+            result = subprocess.check_output(["nmcli", "-t", "-f", "active,ssid","dev","wifi"], universal_newlines=True)
             for line in result.split('\n'):
-                if "SSID" in line:
+                if "yes" in line:
                     ssid = line.split(":")[1].strip()
+                    print(ssid)
                     return ssid
         except subprocess.CalledProcessError:
             return None
@@ -23,6 +25,7 @@ try:
 
     counter=False
     if (checkssid()=="Hostel" or checkssid()=="IITPKD" or checkssid()=="IIT-PALAKKAD"):
+        print("right")
         counter=True
     else:
         pass
@@ -31,6 +34,7 @@ try:
         try:
             socket.setdefaulttimeout(3)
             socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect(("8.8.8.8", 53))
+            print("connected")
             return True
         except socket.error:
             return False
@@ -38,10 +42,13 @@ try:
 
     if (counter==True and not is_connected()):
         print("inside")
-        driverpath = r"C:\Users\Vishesh\Downloads\chromedriver-win64\chromedriver-win64\chromedriver.exe"
-        
+        driverpath = r"./chromedriver-linux64/chromedriver"
+
         service = Service(executable_path=driverpath)
         driver = webdriver.Chrome(service=service)
+ 
+        print(" start service",service)
+        print("started driver",driver)
         driver.get("http://8.8.8.8/")
         sleep(2)
         current_url = driver.current_url
